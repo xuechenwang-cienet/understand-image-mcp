@@ -1,0 +1,19 @@
+# Local opencode config contains a real API key — never commit it.
+# Use opencode.json.sample as the template.
+opencode.json
+
+# Local env / secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

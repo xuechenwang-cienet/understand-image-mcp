@@ -1,0 +1,23 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "understand_image": {
+      "type": "local",
+      "command": [
+        "uv",
+        "run",
+        "--with", "mcp",
+        "--with", "httpx",
+        "--with", "pydantic",
+        "python3",
+        "/ABSOLUTE/PATH/TO/understand-image-mcp/server.py"
+      ],
+      "environment": {
+        "LLM_API_URL": "<YOUR_LLM_API_URL>",
+        "LLM_MODEL_NAME": "<YOUR_LLM_MODEL_NAME>",
+        "LLM_API_KEY": "<YOUR_LLM_API_KEY>"
+      },
+      "enabled": true
+    }
+  }
+}
