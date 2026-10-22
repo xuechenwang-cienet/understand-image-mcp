@@ -47,6 +47,18 @@ FETCH_REMOTE = os.environ.get("LLM_FETCH_REMOTE", "true").strip().lower() in (
 )
 MAX_IMAGE_BYTES = int(os.environ.get("LLM_IMAGE_MAX_BYTES", str(25 * 1024 * 1024)))
 
+# Reasoning models (e.g. Qwen3 thinking variants) emit a long chain of
+# "reasoning tokens" before the answer, which can push a single call past the
+# MCP client's request timeout (surfacing as JSON-RPC error -32001). Disable
+# thinking by default for fast, direct vision answers; set
+# LLM_ENABLE_THINKING=true to opt back in.
+ENABLE_THINKING = os.environ.get("LLM_ENABLE_THINKING", "false").strip().lower() in (
+    "1", "true", "yes", "on",
+)
+
+# Request timeout for the upstream vision API, in seconds.
+REQUEST_TIMEOUT = float(os.environ.get("LLM_REQUEST_TIMEOUT", "120"))
+
 # ---------------------------------------------------------------------------
 # MCP server
 # ---------------------------------------------------------------------------
@@ -311,10 +323,11 @@ async def understand_image(params: UnderstandImageInput) -> str:
         "messages": _build_messages(image_url, prompt),
         "max_tokens": params.max_tokens,
         "temperature": params.temperature,
+        "enable_thinking": ENABLE_THINKING,
     }
 
     try:
-        async with httpx.AsyncClient(timeout=120.0) as client:
+        async with httpx.AsyncClient(timeout=REQUEST_TIMEOUT) as client:
             resp = await client.post(endpoint, headers=headers, json=payload)
             resp.raise_for_status()
             data = resp.json()
