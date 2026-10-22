@@ -1,3 +1,11 @@
+> **已归档（2026-10-22）**：代码已并入 [`zenanswer/agent-skills`](https://github.com/zenanswer/agent-skills) 的 `skills/image-inspector/`，并扩展为问答 / OCR / 结构化抽取 / 批量 / 2D・3D grounding。安装：
+>
+> ```bash
+> npx -y skills@latest add zenanswer/agent-skills -g -s image-inspector -a opencode claude-code -y
+> ```
+>
+> 本仓库仅作历史留存，不再更新。
+
 # understand_image MCP
 
 一个调用任意 OpenAI 兼容多模态大模型来理解图片内容的 MCP server。
